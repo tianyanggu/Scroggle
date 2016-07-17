@@ -1,0 +1,6 @@
+C:\Users\Tianyang\Documents\GitHub\Scroggle\Scroggle\bin\Debug\Scroggle.exe.config
+C:\Users\Tianyang\Documents\GitHub\Scroggle\Scroggle\bin\Debug\Scroggle.exe
+C:\Users\Tianyang\Documents\GitHub\Scroggle\Scroggle\bin\Debug\Scroggle.pdb
+C:\Users\Tianyang\Documents\GitHub\Scroggle\Scroggle\obj\Debug\Scroggle.csprojResolveAssemblyReference.cache
+C:\Users\Tianyang\Documents\GitHub\Scroggle\Scroggle\obj\Debug\Scroggle.exe
+C:\Users\Tianyang\Documents\GitHub\Scroggle\Scroggle\obj\Debug\Scroggle.pdb
