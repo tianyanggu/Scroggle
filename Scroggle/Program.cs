@@ -12,7 +12,7 @@ namespace Scroggle
 
         //Words greater than 4 chars
         //must be adjacent cells, e.g. horizontal, vertical, and diagonal
-        //each letter cub only used once
+        //each letter can only used once
 
         //Points are as follows:
         //length: 4-1, 5-2, 6-3, 7-4, 8+-5
@@ -57,7 +57,7 @@ namespace Scroggle
                 }
             }
 
-            DisplayWords(solvedWords);
+            Display(solvedWords, totalScore);
         }
 
         private void SolverHelper (int i, int j, string currWord, int multiplier, bool[,] visited)
@@ -84,16 +84,43 @@ namespace Scroggle
                                 //checks if letter has been visited before, if so then do nothing.
                                 if (!visited[directionsi[n], directionsj[n]])
                                 {
+                                    //clone the visited array for recursion
                                     bool[,] newVisited = (bool[,]) visited.Clone();
                                     newVisited[directionsi[n], directionsj[n]] = true;
+
+                                    //determine multiplier
+                                    int newMultiplier = multiplier;
+                                    if (board[directionsi[n], directionsj[n]] == 'q')
+                                    {
+                                        newMultiplier *= 3;
+                                    } else if (board[directionsi[n], directionsj[n]] == 'z' || board[directionsi[n], directionsj[n]] == 'k')
+                                    {
+                                        newMultiplier *= 2;
+                                    }
+                                    newMultiplier *= multiplierBoard[directionsi[n], directionsj[n]];
+
                                     string newWord = currWord + board[directionsi[n], directionsj[n]];
+
+                                    //if newWord is in Dictionary, calculate points and add to totalScore and add to the solvedWords hashset
                                     if (newWord.Length >= 4 && dictionary.Contains(newWord))
                                     {
-                                        solvedWords.Add(newWord);
-                                        SolverHelper(i, j, newWord, 1, newVisited);
+                                        if (!solvedWords.Contains(newWord))
+                                        {
+                                            solvedWords.Add(newWord);
+                                            Console.WriteLine("...");
+                                            if (newWord.Length < 8)
+                                            {
+                                                totalScore += (newWord.Length - 3) * newMultiplier;
+                                            }
+                                            else
+                                            {
+                                                totalScore += 5 * newMultiplier;
+                                            }
+                                        }
+                                        SolverHelper(i, j, newWord, newMultiplier, newVisited);
                                     } else
                                     {
-                                        SolverHelper(i, j, newWord, 1, newVisited);
+                                        SolverHelper(i, j, newWord, newMultiplier, newVisited);
                                     }
                                 }
                             }
@@ -104,21 +131,21 @@ namespace Scroggle
         }
 
         //Prints out all the solved words from the hashset solvedWords
-        private void DisplayWords(HashSet<string> solvedWords)
+        private void Display(HashSet<string> solvedWords, int points)
         {
+            Console.WriteLine("Words:");
             foreach (string i in solvedWords)
             {
                 Console.Write("{0} ", i);
             }
+            Console.WriteLine(Environment.NewLine + Environment.NewLine + "Points:" + Environment.NewLine + totalScore);
         }
 
         //-----------------OUTPUT----------------------------
         static void Main(string[] args)
         {
             Program solverInstance = new Program();
-            Console.WriteLine("Words:");
             solverInstance.Solver(board, multiplierBoard);
-            Console.WriteLine("Points:");
             Console.ReadLine();
         }
     }
